@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CompuJoven - Formaciones Disponibles</title>
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <h1>Formaciones Disponibles</h1>
+
+    
+    <div th:if="${mensajeExito}">
+        <strong th:text="${mensajeExito}">¡Postulación exitosa!</strong>
+    </div>
+
+    
+    <div th:if="${mensajeError}">
+        <strong th:text="${mensajeError}">Ocurrió un error.</strong>
+    </div>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Duración</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="f : ${formaciones}">
+                <td th:text="${f.nombre}">Curso Java</td>
+                <td th:text="${f.descripcion}">Curso Backend</td>
+                <td th:text="${f.duracion}">40h</td>
+                <td>
+                    <span th:if="${f.abierta}">Inscripciones Abiertas</span>
+                    <span th:if="${not f.abierta}">Convocatoria Cerrada</span>
+                </td>
+                <td>
+                    <a th:if="${f.abierta}" th:href="@{/joven/postular/{id}(id=${f.id})}">
+                        Postularme
+                    </a>
+                    <span th:if="${not f.abierta}">No disponible</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

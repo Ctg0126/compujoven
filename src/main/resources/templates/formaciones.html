@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CompuJoven - Gestión de Formaciones</title>
+</head>
+<body>
+
+    
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <div>
+        <h1>Gestión de Formaciones</h1>
+        
+        <a href="/formaciones/nueva">Publicar nueva formación</a>
+        <br><br>
+
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Estado</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Duración</th>
+                    <th>Postulados (Total)</th>
+                    <th>Datos de los Postulados</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="f : ${formaciones}">
+                    <td th:text="${f.id}">1</td>
+                    <td>
+                        <strong th:if="${f.abierta}">ABIERTA</strong>
+                        <strong th:if="${not f.abierta}">CERRADA</strong>
+                    </td>
+                    <td th:text="${f.nombre}">Curso Java</td>
+                    <td th:text="${f.descripcion}">Aprende Backend</td>
+                    <td th:text="${f.duracion}">40h</td>
+                    
+                    
+                    <td>
+                        <strong th:text="${#lists.size(f.postulaciones)}">0</strong> jóvenes
+                    </td>
+
+                    
+                    <td>
+                        <span th:if="${#lists.isEmpty(f.postulaciones)}">Sin postulados</span>
+                        
+                        <ul th:if="${not #lists.isEmpty(f.postulaciones)}">
+                            <li th:each="p : ${f.postulaciones}">
+                                <strong th:text="${p.nombre}">Nombre Completo</strong><br>
+                                Documento: <span th:text="${p.tipoDocumento}">CC</span> - <span th:text="${p.numeroDocumento}">123456</span><br>
+                                Edad: <span th:text="${p.edad}">18</span> años | 
+                                Peso: <span th:text="${p.peso}">60.0</span> kg | 
+                                Altura: <span th:text="${p.altura}">1.70</span> m<br>
+                                Correo: <span th:text="${p.email}">correo@ejemplo.com</span>
+                                <hr>
+                            </li>
+                        </ul>
+                    </td>
+
+                    
+                    <td>
+                        <a th:href="@{/formaciones/cambiar-estado/{id}(id=${f.id})}" 
+                           th:text="${f.abierta ? 'Cerrar Convocatoria' : 'Reabrir Convocatoria'}">
+                           Cambiar Estado
+                        </a>
+                        <br><br>
+                        <a th:href="@{/formaciones/eliminar/{id}(id=${f.id})}">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

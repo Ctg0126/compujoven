@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CompuJoven - Nueva formación</title>
+</head>
+<body>
+    <h1>Publicar formación</h1>
+    <form th:action="@{/formaciones}" th:object="${formacion}" method="post">
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}">
+        <br><br>
+        <label>Descripción:</label>
+        <input type="text" th:field="*{descripcion}">
+        <br><br>
+        <label>Duración:</label>
+        <input type="text" th:field="*{duracion}">
+        <br><br>
+        <button type="submit">Publicar</button>
+    </form>
+    <br>
+    <a href="/formaciones">Volver a la lista</a>
+</body>
+</html>
