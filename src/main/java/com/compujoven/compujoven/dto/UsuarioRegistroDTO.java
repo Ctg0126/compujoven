@@ -5,8 +5,7 @@ import com.compujoven.compujoven.model.Rol;
 public class UsuarioRegistroDTO {
 
     private String nombre;
-    private double peso;
-    private double altura;
+    private String telefono;
     private String tipoDocumento;
     private int numeroDocumento;
     private int edad;
@@ -17,10 +16,9 @@ public class UsuarioRegistroDTO {
     public UsuarioRegistroDTO() {
     }
 
-    public UsuarioRegistroDTO(String nombre, double peso, double altura, String tipoDocumento, int numeroDocumento, int edad, String email, String password, Rol rol) {
+    public UsuarioRegistroDTO(String nombre, String telefono, String tipoDocumento, int numeroDocumento, int edad, String email, String password, Rol rol) {
         this.nombre = nombre;
-        this.peso = peso;
-        this.altura = altura;
+        this.telefono = telefono;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = numeroDocumento;
         this.edad = edad;
@@ -37,20 +35,12 @@ public class UsuarioRegistroDTO {
         this.nombre = nombre;
     }
 
-    public double getPeso() {
-        return peso;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setPeso(double peso) {
-        this.peso = peso;
-    }
-
-    public double getAltura() {
-        return altura;
-    }
-
-    public void setAltura(double altura) {
-        this.altura = altura;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getTipoDocumento() {

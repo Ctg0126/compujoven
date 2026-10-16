@@ -7,8 +7,7 @@ public class Usuario {
 
     private Long id;
     private String nombre;
-    private double peso;
-    private double altura;
+    private String telefono;
     private String tipoDocumento;
     private int numeroDocumento;
     private int edad;
@@ -20,11 +19,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nombre, double peso, double altura, String tipoDocumento, int numeroDocumento, int edad, String email, String password, Rol rol) {
+    public Usuario(Long id, String nombre, String telefono, String tipoDocumento, int numeroDocumento, int edad, String email, String password, Rol rol) {
         this.id = id;
         this.nombre = nombre;
-        this.peso = peso;
-        this.altura = altura;
+        this.telefono = telefono;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = numeroDocumento;
         this.edad = edad;
@@ -49,20 +47,12 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public double getPeso() {
-        return peso;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setPeso(double peso) {
-        this.peso = peso;
-    }
-
-    public double getAltura() {
-        return altura;
-    }
-
-    public void setAltura(double altura) {
-        this.altura = altura;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getTipoDocumento() {

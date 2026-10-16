@@ -59,8 +59,7 @@ public class AuthVistaController {
         Usuario usuario = new Usuario(
             null,
             dto.getNombre(),
-            dto.getPeso(),
-            dto.getAltura(),
+            dto.getTelefono(),
             dto.getTipoDocumento(),
             dto.getNumeroDocumento(),
             dto.getEdad(),

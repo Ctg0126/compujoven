@@ -32,7 +32,6 @@ public class Formacion {
             this.postulaciones.add(usuario);
         }
     }
-
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

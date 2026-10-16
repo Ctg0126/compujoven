@@ -17,8 +17,7 @@ public class UsuarioService {
         registrar(new Usuario(
             null, 
             "Administrador", 
-            0.0, 
-            0.0, 
+            "1234567890", 
             "CC", 
             12345678, 
             30, 
