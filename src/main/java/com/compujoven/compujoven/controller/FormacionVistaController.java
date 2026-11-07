@@ -36,16 +36,13 @@ public class FormacionVistaController {
         return "redirect:/formaciones";
     }
 
-    @GetMapping("/formaciones/cambiar-estado/{id}")
+    @PostMapping("/formaciones/cambiar-estado/{id}")
     public String cambiarEstado(@PathVariable Long id) {
-        Formacion formacion = formacionService.buscarPorId(id);
-        if (formacion != null) {
-            formacion.setAbierta(!formacion.isAbierta());
-        }
+        formacionService.cambiarEstado(id);
         return "redirect:/formaciones";
     }
 
-    @GetMapping("/formaciones/eliminar/{id}")
+    @PostMapping("/formaciones/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         formacionService.eliminar(id);
         return "redirect:/formaciones";

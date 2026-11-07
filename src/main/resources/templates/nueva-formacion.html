@@ -1,24 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CompuJoven - Nueva formación</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
 </head>
 <body>
-    <h1>Publicar formación</h1>
-    <form th:action="@{/formaciones}" th:object="${formacion}" method="post">
-        <label>Nombre:</label>
-        <input type="text" th:field="*{nombre}">
-        <br><br>
-        <label>Descripción:</label>
-        <input type="text" th:field="*{descripcion}">
-        <br><br>
-        <label>Duración:</label>
-        <input type="text" th:field="*{duracion}">
-        <br><br>
-        <button type="submit">Publicar</button>
-    </form>
-    <br>
-    <a href="/formaciones">Volver a la lista</a>
+
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <main class="contenedor" style="max-width: 640px;">
+        <div class="encabezado-pagina">
+            <h1>Publicar formación</h1>
+        </div>
+
+        <div class="tarjeta">
+            <form th:action="@{/formaciones}" th:object="${formacion}" method="post">
+                <div class="form-grupo">
+                    <label>Nombre</label>
+                    <input type="text" th:field="*{nombre}" required>
+                </div>
+                <div class="form-grupo">
+                    <label>Descripción</label>
+                    <textarea th:field="*{descripcion}" rows="4"></textarea>
+                </div>
+                <div class="form-grupo">
+                    <label>Duración</label>
+                    <input type="text" th:field="*{duracion}" placeholder="Ej: 3 meses">
+                </div>
+                <button type="submit" class="btn btn-primario">Publicar</button>
+                <a th:href="@{/formaciones}" class="btn">Volver a la lista</a>
+            </form>
+        </div>
+    </main>
+
 </body>
 </html>

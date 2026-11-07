@@ -36,14 +36,13 @@ public class AuthVistaController {
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute("loginRequest") LoginRequest request, HttpSession session, Model model) {
         Usuario usuario = usuarioService.login(request.getEmail(), request.getPassword());
-        
+
         if (usuario == null) {
             model.addAttribute("error", "Correo o contraseña incorrectos");
             model.addAttribute("usuarioRegistro", new UsuarioRegistroDTO());
             return "login";
         }
 
-        
         session.setAttribute("usuarioLogueado", usuario);
 
         if (usuario.getRol() == Rol.ADMINISTRADOR) {
@@ -55,9 +54,8 @@ public class AuthVistaController {
 
     @PostMapping("/registro")
     public String procesarRegistro(@ModelAttribute("usuarioRegistro") UsuarioRegistroDTO dto, Model model) {
-        // Convertir DTO con los datos extendidos a Entidad Usuario
+        // El registro público SIEMPRE crea un JOVEN; el rol no se toma del formulario.
         Usuario usuario = new Usuario(
-            null,
             dto.getNombre(),
             dto.getTelefono(),
             dto.getTipoDocumento(),
@@ -65,7 +63,7 @@ public class AuthVistaController {
             dto.getEdad(),
             dto.getEmail(),
             dto.getPassword(),
-            dto.getRol() != null ? dto.getRol() : Rol.JOVEN
+            Rol.JOVEN
         );
 
         Usuario nuevo = usuarioService.registrar(usuario);

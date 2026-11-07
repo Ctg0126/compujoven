@@ -2,9 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
     <div th:fragment="barraNavegacion">
-        <nav>
-            <a href="/joven/formaciones">Inicio</a> | 
-            <a href="/logout">Cerrar Sesión</a>
+        <nav class="navbar">
+            <div class="barra">
+                <span class="marca">CompuJoven</span>
+                <a th:if="${session.usuarioLogueado != null and session.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}"
+                   th:href="@{/formaciones}">Gestión</a>
+                <a th:href="@{/joven/formaciones}">Formaciones</a>
+                <a th:href="@{/logout}">Cerrar Sesión</a>
+            </div>
         </nav>
     </div>
 </body>
