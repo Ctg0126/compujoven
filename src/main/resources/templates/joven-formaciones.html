@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompuJoven - Formaciones Disponibles</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <main class="contenedor">
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Formaciones Disponibles</h1>
+                <p class="subtitulo">Elige una formación y postúlate con un clic.</p>
+            </div>
+        </div>
+
+        <div class="alerta alerta-exito" th:if="${mensajeExito}">
+            <strong th:text="${mensajeExito}">¡Postulación exitosa!</strong>
+        </div>
+
+        <div class="alerta alerta-error" th:if="${mensajeError}">
+            <strong th:text="${mensajeError}">Ocurrió un error.</strong>
+        </div>
+
+        <form class="busqueda" th:action="@{/joven/formaciones}" method="get">
+            <input type="search" name="q" th:value="${q}" maxlength="100"
+                   placeholder="Buscar por nombre, descripción o requisitos...">
+            <label class="casilla">
+                <input type="checkbox" name="soloAbiertas" th:checked="${soloAbiertas}"> Solo abiertas
+            </label>
+            <button type="submit" class="btn btn-primario">Buscar</button>
+            <a th:if="${hayFiltro}" th:href="@{/joven/formaciones}" class="btn">Limpiar</a>
+        </form>
+        <p class="subtitulo resultados" th:if="${hayFiltro}"
+           th:text="${#lists.size(formaciones)} + (${#lists.size(formaciones)} == 1 ? ' resultado' : ' resultados')">3 resultados</p>
+
+        <div class="tarjeta">
+            <p class="vacio" th:if="${#lists.isEmpty(formaciones) and hayFiltro}">No encontramos formaciones con esos criterios. Prueba con otra palabra.</p>
+            <p class="vacio" th:if="${#lists.isEmpty(formaciones) and not hayFiltro}">Todavía no hay formaciones publicadas.</p>
+            <div class="tabla-wrap" th:if="${not #lists.isEmpty(formaciones)}">
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Requisitos</th>
+                            <th>Duración</th>
+                            <th>Cupos</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="f : ${formaciones}">
+                            <td data-label="Nombre"><strong th:text="${f.nombre}">Curso Java</strong></td>
+                            <td data-label="Descripción" th:text="${f.descripcion}">Curso Backend</td>
+                            <td data-label="Requisitos">
+                                <span th:if="${f.requisitos != null and not #strings.isEmpty(f.requisitos)}" th:text="${f.requisitos}">Ninguno</span>
+                                <span class="vacio" th:if="${f.requisitos == null or #strings.isEmpty(f.requisitos)}">Sin requisitos</span>
+                            </td>
+                            <td data-label="Duración" th:text="${f.duracion}">40h</td>
+                            <td data-label="Cupos">
+                                <span th:if="${f.sinLimite}">Sin límite</span>
+                                <span th:if="${not f.sinLimite}" th:text="${f.cuposDisponibles} + ' disponibles'">10 disponibles</span>
+                            </td>
+                            <td data-label="Estado">
+                                <span class="insignia insignia-ok" th:if="${f.abierta}">Inscripciones Abiertas</span>
+                                <span class="insignia insignia-cerrada" th:if="${not f.abierta and not f.llena}">Convocatoria Cerrada</span>
+                                <span class="insignia insignia-cerrada" th:if="${not f.abierta and f.llena}">Cupos Agotados</span>
+                            </td>
+                            <td data-label="Acción">
+                                <span class="insignia" th:if="${postuladas.containsKey(f.id)}"
+                                      th:classappend="${postuladas.get(f.id).claseCss}"
+                                      th:text="${postuladas.get(f.id).etiqueta}">Pendiente de revisión</span>
+                                <form th:if="${f.abierta and not postuladas.containsKey(f.id)}"
+                                      th:action="@{/joven/postular/{id}(id=${f.id})}" method="post">
+                                    <button type="submit" class="btn btn-primario btn-pequeno">Postularme</button>
+                                </form>
+                                <span class="vacio" th:if="${not f.abierta and not postuladas.containsKey(f.id)}">No disponible</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

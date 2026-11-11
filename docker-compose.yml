@@ -1,0 +1,30 @@
+# MySQL para CompuJoven.
+# Spring Boot lo levanta solo al ejecutar la app (necesita Docker Desktop abierto).
+# También se puede iniciar a mano con:  docker compose up -d
+# Credenciales SOLO de desarrollo.
+services:
+  db:
+    image: mysql:8.0
+    container_name: compujoven-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_compujoven
+      MYSQL_DATABASE: compujoven
+      MYSQL_USER: compujoven
+      MYSQL_PASSWORD: compujoven123
+      TZ: America/Bogota
+    ports:
+      - "3307:3306"   # 3307 en el equipo, para no chocar con un MySQL local en el 3306
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    labels:
+      org.springframework.boot.jdbc.parameters: "allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=America/Bogota&characterEncoding=UTF-8"
+    volumes:
+      - compujoven-datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot_compujoven"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  compujoven-datos:

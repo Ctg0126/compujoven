@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompuJoven - Editar perfil</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <main class="contenedor" style="max-width: 640px;">
+        <div class="encabezado-pagina">
+            <h1>Editar perfil</h1>
+        </div>
+
+        <div class="tarjeta">
+            <div class="alerta alerta-error" th:if="${error}" th:text="${error}"></div>
+
+            <form th:action="@{/joven/perfil/editar}" th:object="${perfilForm}" method="post">
+                <div class="form-grupo">
+                    <label>Nombre completo</label>
+                    <input type="text" th:field="*{nombre}"
+                           pattern="[A-Za-zÀ-ÿ\s]+"
+                           oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÿ\s]/g, '')" required>
+                </div>
+
+                <div class="form-fila">
+                    <div class="form-grupo">
+                        <label>Teléfono</label>
+                        <input type="tel" th:field="*{telefono}" pattern="[0-9]+"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label>Edad</label>
+                        <input type="number" th:field="*{edad}" min="15" max="120" required>
+                    </div>
+                </div>
+
+                <div class="form-grupo">
+                    <label>Tipo de documento</label>
+                    <select th:field="*{tipoDocumento}" required>
+                        <option value="CC">Cédula de Ciudadanía (CC)</option>
+                        <option value="TI">Tarjeta de Identidad (TI)</option>
+                        <option value="CE">Cédula de Extranjería (CE)</option>
+                        <option value="PEP">Permiso Especial de Permanencia (PEP)</option>
+                        <option value="PPT">Permiso por Protección Temporal (PPT)</option>
+                        <option value="PASAPORTE">Pasaporte</option>
+                    </select>
+                </div>
+
+                <div class="form-grupo">
+                    <label>Número de documento</label>
+                    <input type="text" th:field="*{numeroDocumento}" pattern="[0-9]+" maxlength="15"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                </div>
+
+                <div class="form-grupo">
+                    <label>Correo electrónico</label>
+                    <input type="email" th:field="*{email}" required>
+                </div>
+
+                <div class="form-grupo">
+                    <label>Nueva contraseña (opcional)</label>
+                    <input type="password" th:field="*{nuevaPassword}" minlength="6"
+                           placeholder="Déjala vacía para conservar la actual" autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+                <a th:href="@{/joven/perfil}" class="btn">Cancelar</a>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

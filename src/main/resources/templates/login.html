@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompuJoven - Acceso</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="pagina-acceso" th:attr="data-tab=${errorRegistro != null} ? 'registro' : 'login'">
+
+    <div class="acceso">
+        <div class="logo">
+            <h1>CompuJoven</h1>
+            <p class="subtitulo">Formaciones para jóvenes de Cartagena</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="pestanas">
+                <button type="button" id="tab-login" class="pestana" onclick="mostrarPestana('login')">Iniciar Sesión</button>
+                <button type="button" id="tab-registro" class="pestana" onclick="mostrarPestana('registro')">Registrarse</button>
+            </div>
+
+            <p class="alerta alerta-error" th:if="${error}" th:text="${error}"></p>
+            <p class="alerta alerta-error" th:if="${errorRegistro}" th:text="${errorRegistro}"></p>
+            <p class="alerta alerta-exito" th:if="${param.registroExitoso}">¡Registro exitoso! Inicia sesión.</p>
+            <p class="alerta alerta-exito" th:if="${param.cuentaEliminada}">Tu cuenta fue eliminada correctamente.</p>
+
+            <div id="seccion-login">
+                <form th:action="@{/login}" method="post">
+                    <div class="form-grupo">
+                        <label>Correo Electrónico</label>
+                        <input type="email" name="email" placeholder="correo@ejemplo.com" required />
+                    </div>
+                    <div class="form-grupo">
+                        <label>Contraseña</label>
+                        <input type="password" name="password" placeholder="******" required />
+                    </div>
+                    <button type="submit" class="btn btn-primario btn-bloque">Ingresar</button>
+                </form>
+            </div>
+
+            <div id="seccion-registro" style="display: none;">
+                <form th:action="@{/registro}" method="post">
+                    <div class="form-grupo">
+                        <label>Nombre Completo</label>
+                        <input type="text" name="nombre"
+                               pattern="[A-Za-zÀ-ÿ\s]+"
+                               oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÿ\s]/g, '')"
+                               required />
+                    </div>
+
+                    <div class="form-fila">
+                        <div class="form-grupo">
+                            <label>Teléfono</label>
+                            <input type="tel" name="telefono" pattern="[0-9]+"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                        </div>
+                        <div class="form-grupo">
+                            <label>Edad</label>
+                            <input type="number" name="edad" min="15" max="120" required />
+                        </div>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Tipo de Documento</label>
+                        <select name="tipoDocumento" required>
+                            <option value="" disabled selected>Seleccione un tipo</option>
+                            <option value="CC">Cédula de Ciudadanía (CC)</option>
+                            <option value="TI">Tarjeta de Identidad (TI)</option>
+                            <option value="CE">Cédula de Extranjería (CE)</option>
+                            <option value="PEP">Permiso Especial de Permanencia (PEP)</option>
+                            <option value="PPT">Permiso por Protección Temporal (PPT)</option>
+                            <option value="PASAPORTE">Pasaporte</option>
+                        </select>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Número de Documento</label>
+                        <input type="text" name="numeroDocumento" pattern="[0-9]+" maxlength="15"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Correo Electrónico</label>
+                        <input type="email" name="email" required />
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>Contraseña</label>
+                        <input type="password" name="password" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-primario btn-bloque">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mostrarPestana(tipo) {
+            const esLogin = tipo === 'login';
+            document.getElementById('seccion-login').style.display = esLogin ? 'block' : 'none';
+            document.getElementById('seccion-registro').style.display = esLogin ? 'none' : 'block';
+            document.getElementById('tab-login').classList.toggle('activa', esLogin);
+            document.getElementById('tab-registro').classList.toggle('activa', !esLogin);
+        }
+        mostrarPestana(document.body.dataset.tab || 'login');
+    </script>
+
+</body>
+</html>

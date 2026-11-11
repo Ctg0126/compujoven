@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompuJoven - Mi perfil</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <main class="contenedor">
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Mi perfil</h1>
+                <p class="subtitulo">Revisa y actualiza tus datos, sube tu hoja de vida y consulta tus postulaciones.</p>
+            </div>
+            <a th:href="@{/joven/perfil/editar}" class="btn btn-primario">Editar perfil</a>
+        </div>
+
+        <div class="alerta alerta-exito" th:if="${mensajeExito}" th:text="${mensajeExito}"></div>
+        <div class="alerta alerta-error" th:if="${mensajeError}" th:text="${mensajeError}"></div>
+        <div class="alerta alerta-error" th:if="${param.errorArchivo}">El archivo supera el tamaño máximo de 5 MB.</div>
+
+        <!-- Datos personales -->
+        <div class="tarjeta">
+            <h2>Datos personales</h2>
+            <dl class="datos">
+                <div><dt>Nombre completo</dt><dd th:text="${usuario.nombre}">Nombre</dd></div>
+                <div><dt>Tipo de documento</dt><dd th:text="${usuario.tipoDocumento}">CC</dd></div>
+                <div><dt>Número de documento</dt><dd th:text="${usuario.numeroDocumento}">123456789</dd></div>
+                <div><dt>Edad</dt><dd th:text="${usuario.edad} + ' años'">18 años</dd></div>
+                <div><dt>Teléfono</dt><dd th:text="${usuario.telefono}">3000000000</dd></div>
+                <div><dt>Correo electrónico</dt><dd th:text="${usuario.email}">correo@ejemplo.com</dd></div>
+            </dl>
+        </div>
+
+        <!-- Hoja de vida -->
+        <div class="tarjeta seccion">
+            <h2>Hoja de vida</h2>
+
+            <div class="archivo-actual" th:if="${hojaDeVida != null}">
+                <div>
+                    <strong th:text="${hojaDeVida.nombreArchivo}">mi-cv.pdf</strong><br>
+                    <span class="subtitulo">
+                        <span th:text="${hojaDeVida.tamanoTexto}">120 KB</span> ·
+                        subida el <span th:text="${hojaDeVida.fechaTexto}">01/01/2026 10:00</span>
+                    </span>
+                </div>
+                <div class="acciones-fila">
+                    <a th:href="@{/joven/perfil/hoja-de-vida}" class="btn btn-secundario btn-pequeno">Descargar</a>
+                    <form th:action="@{/joven/perfil/hoja-de-vida/eliminar}" method="post"
+                          onsubmit="return confirm('¿Eliminar tu hoja de vida?');">
+                        <button type="submit" class="btn btn-peligro btn-pequeno">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+            <p class="vacio" th:if="${hojaDeVida == null}">Aún no has subido tu hoja de vida.</p>
+
+            <form th:action="@{/joven/perfil/hoja-de-vida}" method="post" enctype="multipart/form-data" class="form-archivo">
+                <input type="file" name="archivo" required
+                       accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                <button type="submit" class="btn btn-primario btn-pequeno"
+                        th:text="${hojaDeVida != null ? 'Reemplazar' : 'Subir hoja de vida'}">Subir hoja de vida</button>
+            </form>
+            <p class="subtitulo">Formatos permitidos: PDF y DOCX. Tamaño máximo: 5 MB.</p>
+        </div>
+
+        <!-- Postulaciones -->
+        <div class="tarjeta seccion">
+            <h2>Mis postulaciones</h2>
+            <p class="vacio" th:if="${#lists.isEmpty(postulaciones)}">Todavía no te has postulado a ninguna formación.</p>
+            <div class="tabla-wrap" th:if="${not #lists.isEmpty(postulaciones)}">
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th>Formación</th>
+                            <th>Duración</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="p : ${postulaciones}">
+                            <td data-label="Formación"><strong th:text="${p.formacion.nombre}">Curso</strong></td>
+                            <td data-label="Duración" th:text="${p.formacion.duracion}">3 meses</td>
+                            <td data-label="Fecha" th:text="${p.fechaTexto}">01/01/2026 10:00</td>
+                            <td data-label="Estado">
+                                <span class="insignia" th:classappend="${p.estado.claseCss}" th:text="${p.estado.etiqueta}">Pendiente de revisión</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Eliminar cuenta -->
+        <div class="tarjeta seccion zona-peligro">
+            <h2>Eliminar cuenta</h2>
+            <p class="subtitulo">
+                Se borrarán tus datos, tu hoja de vida y tus postulaciones. Esta acción no se puede deshacer.
+            </p>
+            <form th:action="@{/joven/perfil/eliminar}" method="post"
+                  onsubmit="return confirm('¿Seguro que quieres eliminar tu cuenta? No se puede deshacer.');">
+                <div class="form-grupo">
+                    <label>Escribe tu contraseña para confirmar</label>
+                    <input type="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-peligro">Eliminar mi cuenta</button>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompuJoven - Nueva formación</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <main class="contenedor" style="max-width: 640px;">
+        <div class="encabezado-pagina">
+            <h1>Publicar formación</h1>
+        </div>
+
+        <div class="tarjeta">
+            <div class="alerta alerta-error" th:if="${error}" th:text="${error}"></div>
+            <form th:action="@{/formaciones}" th:object="${formacion}" method="post">
+                <div class="form-grupo">
+                    <label>Nombre</label>
+                    <input type="text" th:field="*{nombre}" required>
+                </div>
+                <div class="form-grupo">
+                    <label>Descripción</label>
+                    <textarea th:field="*{descripcion}" rows="3"></textarea>
+                </div>
+                <div class="form-grupo">
+                    <label>Requisitos</label>
+                    <textarea th:field="*{requisitos}" rows="3"
+                              placeholder="Ej: Tener entre 16 y 28 años, contar con computador..."></textarea>
+                </div>
+                <div class="form-fila">
+                    <div class="form-grupo">
+                        <label>Duración</label>
+                        <input type="text" th:field="*{duracion}" placeholder="Ej: 3 meses">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Capacidad (cupos)</label>
+                        <input type="number" th:field="*{capacidad}" min="0" required>
+                    </div>
+                </div>
+                <p class="subtitulo" style="margin-bottom: 1rem;">
+                    Cuando se llenen los cupos la convocatoria se cierra sola. Usa 0 para no limitar los cupos.
+                </p>
+                <button type="submit" class="btn btn-primario">Publicar</button>
+                <a th:href="@{/formaciones}" class="btn">Volver a la lista</a>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

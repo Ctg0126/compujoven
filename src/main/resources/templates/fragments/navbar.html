@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="barraNavegacion">
+        <nav class="navbar">
+            <div class="barra">
+                <span class="marca">CompuJoven</span>
+                <a th:if="${session.usuarioLogueado != null and session.usuarioLogueado.rol.name() == 'ADMINISTRADOR'}"
+                   th:href="@{/formaciones}">Gestión</a>
+                <a th:href="@{/joven/formaciones}">Formaciones</a>
+                <a th:if="${session.usuarioLogueado != null and session.usuarioLogueado.rol.name() == 'JOVEN'}"
+                   th:href="@{/joven/perfil}">Mi perfil</a>
+                <a th:href="@{/logout}">Cerrar Sesión</a>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>

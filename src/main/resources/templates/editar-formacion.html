@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CompuJoven - Editar formación</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/navbar :: barraNavegacion}"></div>
+
+    <main class="contenedor" style="max-width: 640px;">
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Editar formación</h1>
+                <p class="subtitulo">Corrige los datos de la formación publicada.</p>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <div class="alerta alerta-error" th:if="${error}" th:text="${error}"></div>
+
+            <form th:action="@{/formaciones/editar/{id}(id=${formacion.id})}" th:object="${formacion}" method="post">
+                <div class="form-grupo">
+                    <label>Nombre</label>
+                    <input type="text" th:field="*{nombre}" maxlength="150" required>
+                </div>
+                <div class="form-grupo">
+                    <label>Descripción</label>
+                    <textarea th:field="*{descripcion}" rows="3" maxlength="1000"></textarea>
+                </div>
+                <div class="form-grupo">
+                    <label>Requisitos</label>
+                    <textarea th:field="*{requisitos}" rows="3" maxlength="1000"></textarea>
+                </div>
+                <div class="form-fila">
+                    <div class="form-grupo">
+                        <label>Duración</label>
+                        <input type="text" th:field="*{duracion}" maxlength="50">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Capacidad (cupos)</label>
+                        <input type="number" th:field="*{capacidad}" min="0" required>
+                    </div>
+                </div>
+                <p class="subtitulo" style="margin-bottom: 1rem;">
+                    Cupos ocupados ahora: <strong th:text="${cuposOcupados}">0</strong>.
+                    La capacidad no puede ser menor a ese número. Usa 0 para no limitar los cupos.
+                </p>
+                <button type="submit" class="btn btn-primario">Guardar cambios</button>
+                <a th:href="@{/formaciones}" class="btn">Cancelar</a>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>
